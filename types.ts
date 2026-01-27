@@ -13,6 +13,9 @@ export interface FormData {
   // Moved from former Step 2
   acceptScopeTemplate: string; // 'yes' | 'no'
   scopeDetail: string;
+  
+  // New: Name Selection
+  proposedNames: string[];
 
   // 3. Tax & Invoice
   invoiceType: string; // 'special' | 'normal' | 'uncertain'
@@ -88,6 +91,7 @@ export const INITIAL_DATA: FormData = {
   otherSensitiveType: '',
   acceptScopeTemplate: 'yes',
   scopeDetail: '',
+  proposedNames: ['', '', ''],
   invoiceType: 'uncertain',
   monthlyInvoiceAmount: '',
   taxpayerType: 'uncertain',

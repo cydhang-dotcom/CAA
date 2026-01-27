@@ -7,6 +7,7 @@ import { generatePlan } from './services/gemini';
 // Import Steps
 import Step0CoreGoals from './components/steps/Step0CoreGoals';
 import Step1Business from './components/steps/Step1Business';
+import Step2NameScope from './components/steps/Step2NameScope';
 import Step3TaxInvoice from './components/steps/Step3TaxInvoice';
 import Step4Structure from './components/steps/Step4Structure';
 import Step5Capital from './components/steps/Step5Capital';
@@ -23,7 +24,7 @@ const App: React.FC = () => {
   const [result, setResult] = useState<string>('');
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const TOTAL_STEPS = 10;
+  const TOTAL_STEPS = 11;
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -58,20 +59,22 @@ const App: React.FC = () => {
       case 1:
         return <Step1Business data={formData} updateData={updateData} />;
       case 2:
-        return <Step3TaxInvoice data={formData} updateData={updateData} />;
+        return <Step2NameScope data={formData} updateData={updateData} />;
       case 3:
-        return <Step4Structure data={formData} updateData={updateData} />;
+        return <Step3TaxInvoice data={formData} updateData={updateData} />;
       case 4:
-        return <Step5Capital data={formData} updateData={updateData} />;
+        return <Step4Structure data={formData} updateData={updateData} />;
       case 5:
-        return <Step6Personnel data={formData} updateData={updateData} />;
+        return <Step5Capital data={formData} updateData={updateData} />;
       case 6:
-        return <Step7Address data={formData} updateData={updateData} />;
+        return <Step6Personnel data={formData} updateData={updateData} />;
       case 7:
-        return <Step8Bank data={formData} updateData={updateData} />;
+        return <Step7Address data={formData} updateData={updateData} />;
       case 8:
-        return <Step9HR data={formData} updateData={updateData} />;
+        return <Step8Bank data={formData} updateData={updateData} />;
       case 9:
+        return <Step9HR data={formData} updateData={updateData} />;
+      case 10:
         return <Step10Review data={formData} />;
       default:
         return null;
