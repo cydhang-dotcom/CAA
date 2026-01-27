@@ -36,6 +36,7 @@ export interface FormData {
   customGovernanceDocs: string[];
 
   // 5. Capital
+  registeredCapitalMode: string; // 'custom' | 'recommend'
   registeredCapital: string;
   subscriptionType: string; // 'all_subscribed' | 'has_paid'
   paidPlan: string;
@@ -103,6 +104,7 @@ export const INITIAL_DATA: FormData = {
   roles: [],
   acceptGovernanceTemplate: 'yes',
   customGovernanceDocs: [],
+  registeredCapitalMode: 'custom',
   registeredCapital: '',
   subscriptionType: 'all_subscribed',
   paidPlan: '',

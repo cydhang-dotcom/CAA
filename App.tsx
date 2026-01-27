@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ArrowLeft, ArrowRight, Sparkles, RefreshCw, CheckCircle2, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Sparkles, RefreshCw, CheckCircle2 } from 'lucide-react';
 import StepIndicator from './components/StepIndicator';
 import { FormData, INITIAL_DATA } from './types';
 import { generatePlan } from './services/gemini';
@@ -78,110 +78,121 @@ const App: React.FC = () => {
     }
   };
 
-  // --- Render Result View ---
-  if (result) {
-    return (
-      <div className="min-h-screen bg-zinc-50 pb-10 font-sans">
-        <div className="bg-white/80 backdrop-blur-md border-b border-zinc-200 sticky top-0 z-20 px-6 py-4 flex items-center justify-between shadow-sm">
-          <h1 className="text-lg font-bold text-zinc-900 flex items-center tracking-tight">
-             <CheckCircle2 className="w-5 h-5 text-green-600 mr-2" />
-             方案已生成
-          </h1>
-          <button 
-            onClick={() => { setResult(''); setStep(0); }}
-            className="text-sm font-semibold text-zinc-600 hover:text-zinc-900 flex items-center px-4 py-2 rounded-full hover:bg-zinc-100 transition-colors"
-          >
-            <RefreshCw size={14} className="mr-1.5" /> 重置
-          </button>
-        </div>
-        
-        <div className="max-w-2xl mx-auto p-6">
-          <div className="prose prose-zinc prose-sm max-w-none bg-white p-10 rounded-3xl shadow-xl shadow-zinc-200/50 border border-zinc-100">
-             {/* Simple Markdown Renderer fallback */}
-             {result.split('\n').map((line, i) => {
-               if (line.startsWith('# ')) return <h1 key={i} className="text-3xl font-black text-zinc-900 mt-2 mb-8 pb-4 border-b border-zinc-100 tracking-tight">{line.replace('# ', '')}</h1>
-               if (line.startsWith('## ')) return <h2 key={i} className="text-xl font-bold text-zinc-800 mt-10 mb-4 flex items-center tracking-tight"><div className="w-1.5 h-6 bg-zinc-900 mr-3 rounded-full"></div>{line.replace('## ', '')}</h2>
-               if (line.startsWith('### ')) return <h3 key={i} className="text-base font-bold text-zinc-700 mt-6 mb-2">{line.replace('### ', '')}</h3>
-               if (line.startsWith('- [ ]')) return (
-                 <div key={i} className="flex items-start my-3 p-3.5 bg-zinc-50 rounded-xl border border-zinc-100 hover:border-zinc-300 transition-colors">
-                   <div className="w-5 h-5 rounded-md border-2 border-zinc-300 mr-3 mt-0.5 flex-shrink-0 bg-white"></div>
-                   <span className="text-zinc-700 font-medium">{line.replace('- [ ]', '')}</span>
-                 </div>
-               )
-               if (line.startsWith('- ')) return <li key={i} className="ml-4 text-zinc-600 my-2 leading-relaxed list-disc marker:text-zinc-400">{line.replace('- ', '')}</li>
-               if (line.startsWith('*')) return <p key={i} className="text-zinc-500 italic my-4 text-sm bg-zinc-50 p-3 rounded-lg border-l-2 border-zinc-300">{line.replace(/\*/g, '')}</p>
-               return <p key={i} className="text-zinc-600 my-3 leading-relaxed whitespace-pre-wrap">{line}</p>
-             })}
-          </div>
-
-          <div className="mt-12 text-center px-6">
-            <p className="text-xs text-zinc-400 font-medium tracking-wide uppercase">AI Generate Content • For Reference Only</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // --- Render Loading View ---
-  if (isGenerating) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-zinc-50 p-6">
-        <div className="w-24 h-24 bg-white rounded-3xl flex items-center justify-center mb-8 shadow-2xl shadow-zinc-200 border border-zinc-100">
-           <Sparkles className="w-10 h-10 text-zinc-900 animate-pulse" />
-        </div>
-        <h2 className="text-2xl font-bold text-zinc-900 mb-3 tracking-tight">正在生成方案</h2>
-        <p className="text-zinc-500 text-center max-w-xs text-sm leading-relaxed">
-          AI 正在分析您的业务需求<br/>规划税务路径并生成合规清单...
-        </p>
-      </div>
-    );
-  }
-
-  // --- Render Wizard View ---
+  // --- Layout Wrapper ---
+  // On Mobile: Full screen, bg-stone-50
+  // On Desktop: Center aligned card, bg-stone-200 backdrop
   return (
-    <div className="min-h-screen bg-zinc-50 flex flex-col font-sans text-zinc-900">
-      <StepIndicator currentStep={step} totalSteps={TOTAL_STEPS} />
+    <div className="min-h-screen w-full md:flex md:items-center md:justify-center md:py-10 transition-colors duration-500">
+      
+      {/* Main Card Container */}
+      <div className="w-full h-[100vh] md:h-[85vh] md:max-w-2xl bg-stone-50 md:rounded-3xl md:shadow-2xl md:shadow-stone-900/10 md:border md:border-white/50 flex flex-col relative overflow-hidden">
+        
+        {/* --- Loading View --- */}
+        {isGenerating && (
+          <div className="absolute inset-0 z-50 bg-stone-50 flex flex-col items-center justify-center p-6 fade-in">
+            <div className="w-24 h-24 bg-white rounded-3xl flex items-center justify-center mb-8 shadow-2xl shadow-stone-200 border border-stone-100">
+              <Sparkles className="w-10 h-10 text-stone-600 animate-pulse" />
+            </div>
+            <h2 className="text-2xl font-medium text-stone-800 mb-3 tracking-tight">正在生成方案</h2>
+            <p className="text-stone-500 text-center max-w-xs text-sm leading-relaxed">
+              AI 正在分析您的业务需求<br/>规划税务路径并生成合规清单...
+            </p>
+          </div>
+        )}
 
-      <div className="flex-1 overflow-y-auto no-scrollbar" ref={scrollRef}>
-        <div className="max-w-xl mx-auto p-6 pb-40 pt-4">
-          {renderStep()}
-        </div>
-      </div>
+        {/* --- Result View --- */}
+        {result ? (
+          <div className="flex flex-col h-full bg-stone-50 font-sans text-stone-800">
+            {/* Result Header */}
+            <div className="bg-white/50 backdrop-blur-md border-b border-stone-200 flex-shrink-0 px-6 py-4 flex items-center justify-between z-10">
+              <h1 className="text-lg font-bold text-stone-800 flex items-center tracking-tight">
+                <CheckCircle2 className="w-5 h-5 text-green-600 mr-2" />
+                方案已生成
+              </h1>
+              <button 
+                onClick={() => { setResult(''); setStep(0); }}
+                className="text-sm font-semibold text-stone-600 hover:text-stone-900 flex items-center px-4 py-2 rounded-full hover:bg-white transition-colors"
+              >
+                <RefreshCw size={14} className="mr-1.5" /> 重置
+              </button>
+            </div>
+            
+            {/* Result Content (Scrollable) */}
+            <div className="flex-1 overflow-y-auto no-scrollbar p-6">
+              <div className="prose prose-stone prose-sm max-w-none bg-white p-8 md:p-10 rounded-2xl shadow-sm border border-stone-100">
+                {/* Markdown Renderer */}
+                {result.split('\n').map((line, i) => {
+                  if (line.startsWith('# ')) return <h1 key={i} className="text-2xl md:text-3xl font-medium text-stone-800 mt-2 mb-8 pb-4 border-b border-stone-100 tracking-tight">{line.replace('# ', '')}</h1>
+                  if (line.startsWith('## ')) return <h2 key={i} className="text-lg md:text-xl font-bold text-stone-700 mt-10 mb-4 flex items-center tracking-tight"><div className="w-1.5 h-6 bg-stone-500 mr-3 rounded-full"></div>{line.replace('## ', '')}</h2>
+                  if (line.startsWith('### ')) return <h3 key={i} className="text-base font-bold text-stone-600 mt-6 mb-2">{line.replace('### ', '')}</h3>
+                  if (line.startsWith('- [ ]')) return (
+                    <div key={i} className="flex items-start my-3 p-3 bg-stone-50 rounded-xl border border-stone-100 hover:border-stone-300 transition-colors">
+                      <div className="w-5 h-5 rounded-md border-2 border-stone-300 mr-3 mt-0.5 flex-shrink-0 bg-white"></div>
+                      <span className="text-stone-700 font-medium">{line.replace('- [ ]', '')}</span>
+                    </div>
+                  )
+                  if (line.startsWith('- ')) return <li key={i} className="ml-4 text-stone-600 my-2 leading-relaxed list-disc marker:text-stone-400">{line.replace('- ', '')}</li>
+                  if (line.startsWith('*')) return <p key={i} className="text-stone-500 italic my-4 text-sm bg-stone-50 p-3 rounded-lg border-l-2 border-stone-300">{line.replace(/\*/g, '')}</p>
+                  return <p key={i} className="text-stone-600 my-3 leading-relaxed whitespace-pre-wrap">{line}</p>
+                })}
+              </div>
+              <div className="mt-8 text-center px-6 pb-6">
+                <p className="text-xs text-stone-400 font-medium tracking-wide uppercase">AI Generate Content • For Reference Only</p>
+              </div>
+            </div>
+          </div>
+        ) : (
+          /* --- Wizard View --- */
+          <div className="flex flex-col h-full font-sans text-stone-800">
+            
+            {/* Header (Fixed in Flex) */}
+            <StepIndicator currentStep={step} totalSteps={TOTAL_STEPS} />
 
-      <div className="fixed bottom-0 left-0 right-0 p-6 z-30 pointer-events-none">
-        <div className="max-w-xl mx-auto flex justify-between gap-4 pointer-events-auto">
-          <button
-            onClick={handlePrev}
-            disabled={step === 0}
-            className={`
-              flex-1 py-4 rounded-2xl font-bold flex items-center justify-center transition-all text-sm backdrop-blur-xl border
-              ${step === 0 
-                ? 'bg-white/50 text-zinc-300 border-zinc-100 cursor-not-allowed' 
-                : 'bg-white/90 text-zinc-700 border-zinc-200 hover:bg-white hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 shadow-sm'}
-            `}
-          >
-            <ArrowLeft size={16} className="mr-2" />
-            上一步
-          </button>
-          
-          {step === TOTAL_STEPS - 1 ? (
-             <button
-               onClick={handleSubmit}
-               className="flex-[2] bg-zinc-900 text-white py-4 rounded-2xl font-bold shadow-xl shadow-zinc-300 flex items-center justify-center hover:-translate-y-0.5 active:translate-y-0 transition-all text-sm border border-zinc-900"
-             >
-               生成方案
-               <Sparkles size={16} className="ml-2 text-yellow-300" />
-             </button>
-          ) : (
-             <button
-               onClick={handleNext}
-               className="flex-[2] bg-zinc-900 text-white py-4 rounded-2xl font-bold shadow-xl shadow-zinc-300 flex items-center justify-center hover:-translate-y-0.5 active:translate-y-0 transition-all text-sm border border-zinc-900"
-             >
-               下一步
-               <ArrowRight size={16} className="ml-2" />
-             </button>
-          )}
-        </div>
+            {/* Scrollable Form Content */}
+            <div className="flex-1 overflow-y-auto no-scrollbar relative" ref={scrollRef}>
+              <div className="p-6 md:p-10 pb-20">
+                {renderStep()}
+              </div>
+            </div>
+
+            {/* Footer Actions (Fixed in Flex) */}
+            <div className="flex-shrink-0 p-6 bg-stone-50 border-t border-stone-100 z-20">
+              <div className="flex justify-between gap-4">
+                <button
+                  onClick={handlePrev}
+                  disabled={step === 0}
+                  className={`
+                    flex-1 py-4 rounded-xl font-bold flex items-center justify-center transition-all text-sm backdrop-blur-xl border
+                    ${step === 0 
+                      ? 'bg-stone-100 text-stone-300 border-transparent cursor-not-allowed' 
+                      : 'bg-white text-stone-600 border-stone-200 hover:bg-white hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 shadow-sm'}
+                  `}
+                >
+                  <ArrowLeft size={16} className="mr-2" />
+                  上一步
+                </button>
+                
+                {step === TOTAL_STEPS - 1 ? (
+                  <button
+                    onClick={handleSubmit}
+                    className="flex-[2] bg-stone-700 text-white py-4 rounded-xl font-bold shadow-xl shadow-stone-300 flex items-center justify-center hover:-translate-y-0.5 active:translate-y-0 transition-all text-sm border border-stone-700 hover:bg-stone-800"
+                  >
+                    生成方案
+                    <Sparkles size={16} className="ml-2 text-yellow-100" />
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleNext}
+                    className="flex-[2] bg-stone-800 text-white py-4 rounded-xl font-bold shadow-xl shadow-stone-300 flex items-center justify-center hover:-translate-y-0.5 active:translate-y-0 transition-all text-sm border border-stone-800 hover:bg-stone-900"
+                  >
+                    下一步
+                    <ArrowRight size={16} className="ml-2" />
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

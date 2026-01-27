@@ -15,9 +15,9 @@ interface BaseProps {
 }
 
 // --- Shared Styles ---
-const LABEL_STYLE = "block text-sm font-semibold text-zinc-800 mb-1.5";
-const SUB_LABEL_STYLE = "text-xs text-zinc-500 mb-4 leading-relaxed";
-const INPUT_BASE_STYLE = "w-full p-4 rounded-2xl bg-white border border-zinc-200 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 outline-none transition-all text-zinc-900 placeholder-zinc-400 shadow-sm";
+const LABEL_STYLE = "block text-sm font-medium text-stone-700 mb-2";
+const SUB_LABEL_STYLE = "text-xs text-stone-500 mb-4 leading-relaxed -mt-1";
+const INPUT_BASE_STYLE = "w-full p-4 rounded-xl bg-white border border-stone-200 focus:border-stone-500 focus:ring-1 focus:ring-stone-500 outline-none transition-all text-stone-800 placeholder-stone-400 shadow-sm hover:border-stone-300";
 
 // --- Checkbox Group ---
 interface CheckboxGroupProps extends BaseProps {
@@ -52,17 +52,17 @@ export const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ label, subLabel, o
               key={opt.value}
               onClick={() => toggleValue(opt.value)}
               className={`
-                relative flex items-center p-4 rounded-2xl border cursor-pointer transition-all duration-300 flex-shrink-0
+                relative flex items-center p-4 rounded-xl border cursor-pointer transition-all duration-300 flex-shrink-0
                 ${isSelected 
-                  ? 'bg-zinc-900 border-zinc-900 text-white shadow-lg shadow-zinc-200 transform scale-[1.01]' 
-                  : 'bg-white border-zinc-200 text-zinc-600 hover:border-zinc-300 hover:bg-zinc-50'}
+                  ? 'bg-stone-700 border-stone-700 text-stone-50 shadow-md shadow-stone-200 transform scale-[1.01]' 
+                  : 'bg-white border-stone-200 text-stone-600 hover:border-stone-300 hover:bg-stone-50'}
               `}
             >
               <div className={`
                 w-5 h-5 rounded-md border flex items-center justify-center mr-3 transition-colors flex-shrink-0
-                ${isSelected ? 'bg-white border-white' : 'bg-transparent border-zinc-300'}
+                ${isSelected ? 'bg-stone-600 border-stone-500' : 'bg-transparent border-stone-300'}
               `}>
-                {isSelected && <Check size={12} className="text-zinc-900 stroke-[3]" />}
+                {isSelected && <Check size={12} className="text-white" />}
               </div>
               <span className="text-sm font-medium">
                 {opt.label}
@@ -100,17 +100,17 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({ label, subLabel, options
               key={opt.value}
               onClick={() => onChange(opt.value)}
               className={`
-                relative flex items-center p-4 rounded-2xl border cursor-pointer transition-all duration-300 flex-shrink-0
+                relative flex items-center p-4 rounded-xl border cursor-pointer transition-all duration-300 flex-shrink-0
                 ${isSelected 
-                  ? 'bg-zinc-900 border-zinc-900 text-white shadow-lg shadow-zinc-200 transform scale-[1.01]' 
-                  : 'bg-white border-zinc-200 text-zinc-600 hover:border-zinc-300 hover:bg-zinc-50'}
+                  ? 'bg-stone-700 border-stone-700 text-stone-50 shadow-md shadow-stone-200 transform scale-[1.01]' 
+                  : 'bg-white border-stone-200 text-stone-600 hover:border-stone-300 hover:bg-stone-50'}
               `}
             >
               <div className={`
                 w-5 h-5 rounded-full border flex items-center justify-center mr-3 transition-colors flex-shrink-0
-                ${isSelected ? 'border-white' : 'border-zinc-300'}
+                ${isSelected ? 'border-stone-400' : 'border-stone-300'}
               `}>
-                {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-white" />}
+                {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-stone-50" />}
               </div>
               <span className="text-sm font-medium">
                 {opt.label}

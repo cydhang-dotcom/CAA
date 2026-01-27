@@ -9,15 +9,15 @@ interface Props {
 
 const ReviewRow = ({ label, value }: { label: string, value: string | React.ReactNode }) => (
   <div className="flex justify-between items-start py-4 group">
-    <span className="text-zinc-500 text-sm font-medium w-1/3 flex-shrink-0 group-hover:text-zinc-800 transition-colors">{label}</span>
-    <span className="text-zinc-900 text-sm font-semibold text-right flex-1 break-words">{value || '-'}</span>
+    <span className="text-stone-500 text-sm font-medium w-1/3 flex-shrink-0 group-hover:text-stone-700 transition-colors">{label}</span>
+    <span className="text-stone-800 text-sm font-medium text-right flex-1 break-words">{value || '-'}</span>
   </div>
 );
 
 const SectionHeader = ({ title }: { title: string }) => (
-  <div className="bg-zinc-50 px-6 py-3 border-b border-zinc-100 flex items-center">
-    <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 mr-2"></div>
-    <span className="font-bold text-xs text-zinc-900 uppercase tracking-wider">{title}</span>
+  <div className="bg-stone-50 px-6 py-3 border-b border-stone-100 flex items-center">
+    <div className="w-1.5 h-1.5 rounded-full bg-stone-500 mr-2"></div>
+    <span className="font-bold text-xs text-stone-500 uppercase tracking-wider">{title}</span>
   </div>
 );
 
@@ -34,10 +34,10 @@ const Step10Review: React.FC<Props> = ({ data }) => {
 
   return (
     <div className="fade-in">
-      <h2 className="text-3xl font-bold text-zinc-900 mb-3 tracking-tight">信息确认</h2>
-      <p className="text-zinc-500 mb-8 leading-relaxed">请核对以下关键信息，确认无误后生成方案。</p>
+      <h2 className="text-3xl font-medium text-stone-800 mb-3 tracking-tight">信息确认</h2>
+      <p className="text-stone-500 mb-8 leading-relaxed">请核对以下关键信息，确认无误后生成方案。</p>
       
-      <div className="bg-white rounded-2xl border border-zinc-200 divide-y divide-zinc-100 shadow-xl shadow-zinc-200/50 overflow-hidden mb-8">
+      <div className="bg-white rounded-2xl border border-stone-200 divide-y divide-stone-50 shadow-xl shadow-stone-200/40 overflow-hidden mb-8">
         <SectionHeader title="基础信息" />
         <div className="px-6">
            <ReviewRow label="核心需求" value={mapLabels(data.coreNeeds, [
@@ -45,7 +45,11 @@ const Step10Review: React.FC<Props> = ({ data }) => {
              { label: '开票', value: 'invoice' }, { label: '用工', value: 'hr' }
            ])} />
            <ReviewRow label="交付时间" value={data.expectedDate} />
-           <ReviewRow label="注册资本" value={`${data.registeredCapital} 万 ${data.subscriptionType === 'all_subscribed' ? '(认缴)' : '(实缴)'}`} />
+           <ReviewRow label="注册资本" value={
+             data.registeredCapitalMode === 'recommend' 
+               ? <span className="text-stone-500 italic">待专家推荐</span>
+               : `${data.registeredCapital || '0'} 万 ${data.subscriptionType === 'all_subscribed' ? '(认缴)' : '(实缴)'}`
+           } />
         </div>
 
         <SectionHeader title="业务与治理" />
@@ -75,9 +79,9 @@ const Step10Review: React.FC<Props> = ({ data }) => {
         </div>
       </div>
       
-      <div className="bg-zinc-900 text-zinc-100 p-5 rounded-xl text-sm mb-6 flex items-start shadow-lg">
-         <FileText size={18} className="mt-0.5 mr-3 flex-shrink-0 text-zinc-400" />
-         <p className="font-medium">点击“生成方案”后，AI 将根据上述信息为您规划注册路径、规避风险并生成待办清单。</p>
+      <div className="bg-stone-700 text-stone-50 p-5 rounded-xl text-sm mb-6 flex items-start shadow-lg shadow-stone-300/50">
+         <FileText size={18} className="mt-0.5 mr-3 flex-shrink-0 text-stone-400" />
+         <p className="font-medium tracking-wide">点击“生成方案”后，AI 将根据上述信息为您规划注册路径、规避风险并生成待办清单。</p>
       </div>
     </div>
   );

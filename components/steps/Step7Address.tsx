@@ -38,7 +38,7 @@ const Step7Address: React.FC<Props> = ({ data, updateData }) => {
       )}
 
       <CheckboxGroup
-        label="接受程度确认"
+        label="地址配合度"
         options={[
           { label: '园区集群挂靠', value: 'cluster' },
           { label: '配合工商税务抽查', value: 'inspection' },
