@@ -1,0 +1,5 @@
+{
+  "name": "CorpReg AI Assistant",
+  "description": "A mobile-first company registration intake form that uses Gemini AI to generate a tailored registration plan, to-do list, and timeline based on user inputs.",
+  "requestFramePermissions": []
+}
