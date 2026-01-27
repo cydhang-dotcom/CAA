@@ -66,27 +66,6 @@ const Step1Business: React.FC<Props> = ({ data, updateData }) => {
            onChange={(val) => updateData('otherSensitiveType', val)}
          />
       )}
-
-      <div className="mt-8 border-t border-gray-100 pt-6">
-        <h3 className="text-lg font-bold text-gray-800 mb-4">经营范围</h3>
-        <RadioGroup
-          label="经营范围是否接受标准模板"
-          subLabel="使用工商局标准表述更容易通过"
-          options={[
-            { label: '接受标准模板', value: 'yes' },
-            { label: '需指定特殊范围', value: 'no' },
-          ]}
-          value={data.acceptScopeTemplate}
-          onChange={(val) => updateData('acceptScopeTemplate', val)}
-        />
-        {data.acceptScopeTemplate === 'no' && (
-          <TextArea
-            placeholder="请输入您需要指定的特殊经营范围..."
-            value={data.scopeDetail}
-            onChange={(val) => updateData('scopeDetail', val)}
-          />
-        )}
-      </div>
     </>
   );
 };

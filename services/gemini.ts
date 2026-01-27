@@ -7,7 +7,15 @@ const processFormData = (data: FormData): string => {
 
 export const generatePlan = async (formData: FormData): Promise<string> => {
   try {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    // Safety check for environment variable to prevent crash if process is undefined
+    const apiKey = typeof process !== 'undefined' && process.env ? process.env.API_KEY : '';
+    
+    if (!apiKey) {
+      console.error("API Key not found in process.env");
+      return "系统配置错误：未找到 API Key。请确保环境变量配置正确。";
+    }
+
+    const ai = new GoogleGenAI({ apiKey });
     
     const dataString = processFormData(formData);
 

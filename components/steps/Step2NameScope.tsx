@@ -7,8 +7,10 @@ interface Props {
 }
 
 const Step2NameScope: React.FC<Props> = ({ data, updateData }) => {
+  const names = data.proposedNames || ['', '', ''];
+
   const handleNameChange = (index: number, value: string) => {
-    const newNames = [...data.proposedNames];
+    const newNames = [...names];
     newNames[index] = value;
     updateData('proposedNames', newNames);
   };
@@ -21,7 +23,7 @@ const Step2NameScope: React.FC<Props> = ({ data, updateData }) => {
       <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
         <label className="block text-sm font-bold text-gray-800 mb-4">拟用字号 (建议准备 3-5 个)</label>
         <div className="space-y-4">
-          {data.proposedNames.map((name, idx) => (
+          {names.map((name, idx) => (
             <div key={idx} className="flex items-center">
               <span className="text-stone-400 font-medium w-8 text-sm">0{idx + 1}</span>
               <input
