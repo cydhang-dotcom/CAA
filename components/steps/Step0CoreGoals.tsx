@@ -11,7 +11,7 @@ const Step0CoreGoals: React.FC<Props> = ({ data, updateData }) => {
   return (
     <>
       <h2 className="text-2xl font-bold text-gray-900 mb-2">核心目标与节点</h2>
-      <p className="text-gray-500 mb-6">确认公司注册的主要用途及预期时间</p>
+      <p className="text-gray-500 mb-6">确认公司注册的主要用途及预期时间!</p>
       
       <CheckboxGroup
         label="近期核心需求 (多选)"
