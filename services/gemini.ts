@@ -36,11 +36,12 @@ export const generatePlan = async (formData: FormData): Promise<string> => {
     // 2. Structures Section 2 into specific numbered items.
     const systemPrompt = `
       你是一位资深的企业注册顾问。用户填写了一份《公司注册预填表》。
+      **重要前提：默认注册城市为上海。请严格依据上海市的工商注册流程、园区税收政策及银行开户要求进行规划。**
       请根据用户的输入数据，整理并生成一份结构清晰的《公司注册最终执行方案》。
 
       请严格按照以下 Markdown 结构输出（不要输出 JSON，直接输出文档内容）：
 
-      # 🚀 公司注册执行方案
+      # 🚀 公司注册执行方案 (上海版)
 
       ## 1. 关键信息确认 (已整理)
       *在此处简要总结用户提交的核心架构信息（如：注册资本、股东结构、经营范围方向），用列表形式呈现。*
@@ -51,7 +52,7 @@ export const generatePlan = async (formData: FormData): Promise<string> => {
       2. **注册资本**：建议金额及实缴/认缴方式。
       3. **经营范围措辞**：基于 (${formData.businessDescription}) 的具体措辞建议。
       4. **股权结构**：针对股东人数 (${formData.shareholderCount}) 的风险提示。
-      5. **地址与办公**：根据用户选择 (${formData.needAddressRecommend === 'yes' ? '需要推荐' : '自有地址'}) 给出建议。
+      5. **地址与办公**：结合上海各区/园区政策，根据用户选择 (${formData.needAddressRecommend === 'yes' ? '需要推荐' : '自有地址'}) 给出建议。
 
       ## 3. ⚠️ 风险与合规提示
       *针对用户选择的敏感要素、人员限制或代持情况，给出具体的合规预警。*
