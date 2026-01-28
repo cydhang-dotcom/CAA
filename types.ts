@@ -124,7 +124,7 @@ export const INITIAL_DATA: FormData = {
   addressType: '',
   needPhysicalOffice: 'yes',
   addressRequirements: '',
-  needBankAssist: 'no',
+  needBankAssist: 'yes',
   bankPreference: '',
   designatedBank: '',
   accountUsage: [],

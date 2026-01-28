@@ -6,6 +6,7 @@
     <title>企业注册 AI 助手</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
       body {
         font-family: 'Inter', sans-serif;
@@ -27,6 +28,16 @@
       @keyframes fadeIn {
         from { opacity: 0; transform: translateY(8px); }
         to { opacity: 1; transform: translateY(0); }
+      }
+      /* PDF Generation Helpers */
+      .pdf-content h1, 
+      .pdf-content h2, 
+      .pdf-content h3 {
+        page-break-after: avoid;
+      }
+      .pdf-content p, 
+      .pdf-content li {
+        page-break-inside: avoid;
       }
   </style>
   <script type="importmap">
