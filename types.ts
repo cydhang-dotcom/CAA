@@ -8,15 +8,17 @@ export interface FormData {
   businessDescription: string;
   hasLicense: string; // 'no' | 'yes'
   licenseDetail: string;
+  hasSensitiveTypes: string; // 'no' | 'yes'
   sensitiveTypes: string[];
   otherSensitiveType: string;
+  
+  // 2.5 Company Names
+  proposedNames: string[];
+
   // Moved from former Step 2
   acceptScopeTemplate: string; // 'yes' | 'no'
   scopeDetail: string;
   
-  // New: Name Selection
-  proposedNames: string[];
-
   // 3. Tax & Invoice
   invoiceType: string; // 'special' | 'normal' | 'uncertain'
   monthlyInvoiceAmount: string;
@@ -43,7 +45,6 @@ export interface FormData {
   registeredCapital: string;
   subscriptionType: string; // 'all_subscribed' | 'has_paid'
   paidPlan: string;
-  sourceExplainable: string;
   needCapitalVerify: string;
 
   // 6. Personnel
@@ -55,11 +56,10 @@ export interface FormData {
   restrictionDetail: string;
 
   // 7. Address
-  needAddressRecommend: string;
-  addressType: string;
-  addressMaterialTime: string;
-  addressAcceptance: string[];
-  needPhysicalOffice: string;
+  needAddressRecommend: string; // 'yes' | 'no'
+  addressType: string; // 'commercial' | 'residential' | 'other' (if own address)
+  needPhysicalOffice: string; // 'yes' | 'no'
+  addressRequirements: string; // Remarks
 
   // 8. Bank
   needBankAssist: string;
@@ -87,11 +87,12 @@ export const INITIAL_DATA: FormData = {
   businessDescription: '',
   hasLicense: 'no',
   licenseDetail: '',
+  hasSensitiveTypes: 'no',
   sensitiveTypes: [],
   otherSensitiveType: '',
+  proposedNames: ['', '', ''],
   acceptScopeTemplate: 'yes',
   scopeDetail: '',
-  proposedNames: ['', '', ''],
   invoiceType: 'uncertain',
   monthlyInvoiceAmount: '',
   taxpayerType: 'uncertain',
@@ -112,7 +113,6 @@ export const INITIAL_DATA: FormData = {
   registeredCapital: '',
   subscriptionType: 'all_subscribed',
   paidPlan: '',
-  sourceExplainable: 'yes',
   needCapitalVerify: 'no',
   realNameAuth: 'yes',
   faceAuth: 'yes',
@@ -120,11 +120,10 @@ export const INITIAL_DATA: FormData = {
   videoAuth: 'yes',
   restrictions: ['none'],
   restrictionDetail: '',
-  needAddressRecommend: 'no',
+  needAddressRecommend: 'yes',
   addressType: '',
-  addressMaterialTime: 'yes',
-  addressAcceptance: [],
-  needPhysicalOffice: 'no',
+  needPhysicalOffice: 'yes',
+  addressRequirements: '',
   needBankAssist: 'no',
   bankPreference: '',
   designatedBank: '',

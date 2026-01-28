@@ -47,7 +47,7 @@ const Step4Structure: React.FC<Props> = ({ data, updateData }) => {
       >
         <div className="flex items-center text-stone-600 group-hover:text-stone-800">
           <span className="text-sm font-semibold">高级选项</span>
-          <span className="text-xs text-stone-400 ml-2 font-normal">(期权池 / 代持 / 角色设置)</span>
+          <span className="text-xs text-stone-400 ml-2 font-normal">(期权池 / 代持 / 角色设置 / 治理模板)</span>
         </div>
         <div className="bg-stone-100 p-1.5 rounded-lg group-hover:bg-stone-200 transition-colors">
           {showAdvanced ? <ChevronUp size={16} className="text-stone-600" /> : <ChevronDown size={16} className="text-stone-600" />}
@@ -99,38 +99,38 @@ const Step4Structure: React.FC<Props> = ({ data, updateData }) => {
               value={data.roles}
               onChange={(val) => updateData('roles', val)}
             />
+
+            <div className="mt-6 pt-6 border-t border-stone-200">
+              <RadioGroup
+                label="是否接受我司公司治理模板包"
+                options={[
+                  { label: '是 (推荐)', value: 'yes' },
+                  { label: '否 (需定制)', value: 'no' },
+                ]}
+                layout="row"
+                value={data.acceptGovernanceTemplate}
+                onChange={(val) => updateData('acceptGovernanceTemplate', val)}
+              />
+              
+              {data.acceptGovernanceTemplate === 'no' && (
+                <CheckboxGroup
+                  label="请选择需定制的模板"
+                  options={[
+                    { label: '公司章程', value: 'articles' },
+                    { label: '股东协议', value: 'shareholder_agreement' },
+                    { label: '授权与用印制度', value: 'auth_seal' },
+                    { label: '任职与决议', value: 'appointment' },
+                    { label: '期权协议', value: 'option_agreement' },
+                  ]}
+                  layout="grid"
+                  value={data.customGovernanceDocs}
+                  onChange={(val) => updateData('customGovernanceDocs', val)}
+                />
+              )}
+            </div>
           </div>
         </div>
       )}
-
-      <div className="mt-8 border-t border-stone-100 pt-6">
-        <RadioGroup
-          label="是否接受我司公司治理模板包"
-          options={[
-            { label: '是 (推荐)', value: 'yes' },
-            { label: '否 (需定制)', value: 'no' },
-          ]}
-          layout="row"
-          value={data.acceptGovernanceTemplate}
-          onChange={(val) => updateData('acceptGovernanceTemplate', val)}
-        />
-        
-        {data.acceptGovernanceTemplate === 'no' && (
-          <CheckboxGroup
-            label="请选择需定制的模板"
-            options={[
-              { label: '公司章程', value: 'articles' },
-              { label: '股东协议', value: 'shareholder_agreement' },
-              { label: '授权与用印制度', value: 'auth_seal' },
-              { label: '任职与决议', value: 'appointment' },
-              { label: '期权协议', value: 'option_agreement' },
-            ]}
-            layout="grid"
-            value={data.customGovernanceDocs}
-            onChange={(val) => updateData('customGovernanceDocs', val)}
-          />
-        )}
-      </div>
     </>
   );
 };

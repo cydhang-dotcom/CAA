@@ -60,18 +60,6 @@ const Step5Capital: React.FC<Props> = ({ data, updateData }) => {
            onChange={(val) => updateData('paidPlan', val)}
          />
       )}
-
-      <RadioGroup
-        label="资金来源是否可解释"
-        subLabel="银行开户时可能会被询问"
-        options={[
-          { label: '可说明', value: 'yes' },
-          { label: '不可/困难', value: 'no' },
-        ]}
-        layout="row"
-        value={data.sourceExplainable}
-        onChange={(val) => updateData('sourceExplainable', val)}
-      />
     </>
   );
 };

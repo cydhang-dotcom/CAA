@@ -39,32 +39,53 @@ const Step1Business: React.FC<Props> = ({ data, updateData }) => {
         />
       )}
 
-      <CheckboxGroup
+      <RadioGroup
         label="是否涉及敏感要素"
         subLabel="可能影响名称审核、地址或税务"
         options={[
-          { label: '教培', value: 'education' },
-          { label: '医疗/器械', value: 'medical' },
-          { label: '食品/餐饮', value: 'food' },
-          { label: '进出口', value: 'import_export' },
-          { label: '直播/MCN', value: 'media' },
-          { label: '金融/理财', value: 'finance' },
-          { label: '人力/劳务', value: 'hr_service' },
-          { label: '建筑/施工', value: 'construction' },
-          { label: '危化/环保', value: 'chemical' },
-          { label: '网络文化/ICP', value: 'icp' },
-          { label: '其他', value: 'other' },
+          { label: '否', value: 'no' },
+          { label: '是', value: 'yes' },
         ]}
-        layout="grid"
-        value={data.sensitiveTypes}
-        onChange={(val) => updateData('sensitiveTypes', val)}
+        value={data.hasSensitiveTypes}
+        onChange={(val) => {
+          updateData('hasSensitiveTypes', val);
+          if (val === 'no') {
+            updateData('sensitiveTypes', []);
+            updateData('otherSensitiveType', '');
+          }
+        }}
+        layout="row"
       />
-      {data.sensitiveTypes.includes('other') && (
-         <TextInput
-           placeholder="其他敏感要素说明"
-           value={data.otherSensitiveType}
-           onChange={(val) => updateData('otherSensitiveType', val)}
-         />
+
+      {data.hasSensitiveTypes === 'yes' && (
+        <div className="fade-in bg-stone-50 p-4 rounded-xl border border-stone-100 mb-8">
+          <CheckboxGroup
+            label="请选择涉及的敏感领域"
+            options={[
+              { label: '教培', value: 'education' },
+              { label: '医疗/器械', value: 'medical' },
+              { label: '食品/餐饮', value: 'food' },
+              { label: '进出口', value: 'import_export' },
+              { label: '直播/MCN', value: 'media' },
+              { label: '金融/理财', value: 'finance' },
+              { label: '人力/劳务', value: 'hr_service' },
+              { label: '建筑/施工', value: 'construction' },
+              { label: '危化/环保', value: 'chemical' },
+              { label: '网络文化/ICP', value: 'icp' },
+              { label: '其他', value: 'other' },
+            ]}
+            layout="grid"
+            value={data.sensitiveTypes}
+            onChange={(val) => updateData('sensitiveTypes', val)}
+          />
+          {data.sensitiveTypes.includes('other') && (
+            <TextInput
+              placeholder="其他敏感要素说明"
+              value={data.otherSensitiveType}
+              onChange={(val) => updateData('otherSensitiveType', val)}
+            />
+          )}
+        </div>
       )}
     </>
   );

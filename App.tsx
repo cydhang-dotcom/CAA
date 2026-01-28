@@ -7,7 +7,7 @@ import { generatePlan } from './services/gemini';
 // Import Steps
 import Step0CoreGoals from './components/steps/Step0CoreGoals';
 import Step1Business from './components/steps/Step1Business';
-import Step2NameScope from './components/steps/Step2NameScope';
+// Step2NameScope removed
 import Step3TaxInvoice from './components/steps/Step3TaxInvoice';
 import Step4Structure from './components/steps/Step4Structure';
 import Step5Capital from './components/steps/Step5Capital';
@@ -24,7 +24,7 @@ const App: React.FC = () => {
   const [result, setResult] = useState<string>('');
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const TOTAL_STEPS = 11;
+  const TOTAL_STEPS = 10;
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -51,6 +51,68 @@ const App: React.FC = () => {
     setIsGenerating(false);
   };
 
+  // --- Markdown Rendering Helper ---
+  const renderMarkdown = (text: string) => {
+    // Helper to parse inline bold syntax (**text**)
+    const formatInline = (str: string) => {
+      // Split by **text** pattern
+      return str.split(/(\*\*.*?\*\*)/g).map((part, index) => {
+        if (part.startsWith('**') && part.endsWith('**') && part.length >= 4) {
+          return <strong key={index} className="font-bold text-stone-900">{part.slice(2, -2)}</strong>;
+        }
+        return part;
+      });
+    };
+
+    return text.split('\n').map((line, i) => {
+      const trimmed = line.trim();
+      if (trimmed.length === 0) return <div key={i} className="h-4"></div>;
+
+      if (line.startsWith('# ')) {
+        return <h1 key={i} className="text-2xl md:text-3xl font-medium text-stone-800 mt-4 mb-6 pb-4 border-b border-stone-100 tracking-tight">{line.replace('# ', '')}</h1>;
+      }
+      
+      if (line.startsWith('## ')) {
+        return (
+          <h2 key={i} className="text-lg md:text-xl font-bold text-stone-700 mt-8 mb-4 flex items-center tracking-tight">
+            <div className="w-1.5 h-6 bg-stone-500 mr-3 rounded-full"></div>
+            {line.replace('## ', '')}
+          </h2>
+        );
+      }
+      
+      if (line.startsWith('### ')) {
+        return <h3 key={i} className="text-base font-bold text-stone-600 mt-6 mb-2">{formatInline(line.replace('### ', ''))}</h3>;
+      }
+      
+      if (line.startsWith('- [ ]')) {
+        return (
+          <div key={i} className="flex items-start my-3 p-3 bg-stone-50 rounded-xl border border-stone-100 hover:border-stone-300 transition-colors">
+            <div className="w-5 h-5 rounded-md border-2 border-stone-300 mr-3 mt-0.5 flex-shrink-0 bg-white"></div>
+            <span className="text-stone-700 font-medium">{formatInline(line.replace('- [ ]', ''))}</span>
+          </div>
+        );
+      }
+      
+      if (line.startsWith('- ')) {
+        return (
+          <div key={i} className="flex items-start my-2 ml-1">
+             <div className="w-1.5 h-1.5 rounded-full bg-stone-400 mt-2 mr-3 flex-shrink-0"></div>
+             <p className="text-stone-600 leading-relaxed flex-1">{formatInline(line.replace('- ', ''))}</p>
+          </div>
+        );
+      }
+
+      // Block italics/notes (starts with * but not **)
+      if (line.startsWith('*') && !line.startsWith('**')) {
+        return <p key={i} className="text-stone-500 italic my-4 text-sm bg-stone-50 p-3 rounded-lg border-l-2 border-stone-300">{formatInline(line.replace(/^\*|\*$/g, ''))}</p>;
+      }
+
+      // Standard paragraph
+      return <p key={i} className="text-stone-600 my-3 leading-relaxed whitespace-pre-wrap">{formatInline(line)}</p>;
+    });
+  };
+
   // --- Render Steps ---
   const renderStep = () => {
     switch (step) {
@@ -59,22 +121,20 @@ const App: React.FC = () => {
       case 1:
         return <Step1Business data={formData} updateData={updateData} />;
       case 2:
-        return <Step2NameScope data={formData} updateData={updateData} />;
-      case 3:
         return <Step3TaxInvoice data={formData} updateData={updateData} />;
-      case 4:
+      case 3:
         return <Step4Structure data={formData} updateData={updateData} />;
-      case 5:
+      case 4:
         return <Step5Capital data={formData} updateData={updateData} />;
-      case 6:
+      case 5:
         return <Step6Personnel data={formData} updateData={updateData} />;
-      case 7:
+      case 6:
         return <Step7Address data={formData} updateData={updateData} />;
-      case 8:
+      case 7:
         return <Step8Bank data={formData} updateData={updateData} />;
-      case 9:
+      case 8:
         return <Step9HR data={formData} updateData={updateData} />;
-      case 10:
+      case 9:
         return <Step10Review data={formData} />;
       default:
         return null;
@@ -123,21 +183,7 @@ const App: React.FC = () => {
             {/* Result Content (Scrollable) */}
             <div className="flex-1 overflow-y-auto no-scrollbar p-6">
               <div className="prose prose-stone prose-sm max-w-none bg-white p-8 md:p-10 rounded-2xl shadow-sm border border-stone-100">
-                {/* Markdown Renderer */}
-                {result.split('\n').map((line, i) => {
-                  if (line.startsWith('# ')) return <h1 key={i} className="text-2xl md:text-3xl font-medium text-stone-800 mt-2 mb-8 pb-4 border-b border-stone-100 tracking-tight">{line.replace('# ', '')}</h1>
-                  if (line.startsWith('## ')) return <h2 key={i} className="text-lg md:text-xl font-bold text-stone-700 mt-10 mb-4 flex items-center tracking-tight"><div className="w-1.5 h-6 bg-stone-500 mr-3 rounded-full"></div>{line.replace('## ', '')}</h2>
-                  if (line.startsWith('### ')) return <h3 key={i} className="text-base font-bold text-stone-600 mt-6 mb-2">{line.replace('### ', '')}</h3>
-                  if (line.startsWith('- [ ]')) return (
-                    <div key={i} className="flex items-start my-3 p-3 bg-stone-50 rounded-xl border border-stone-100 hover:border-stone-300 transition-colors">
-                      <div className="w-5 h-5 rounded-md border-2 border-stone-300 mr-3 mt-0.5 flex-shrink-0 bg-white"></div>
-                      <span className="text-stone-700 font-medium">{line.replace('- [ ]', '')}</span>
-                    </div>
-                  )
-                  if (line.startsWith('- ')) return <li key={i} className="ml-4 text-stone-600 my-2 leading-relaxed list-disc marker:text-stone-400">{line.replace('- ', '')}</li>
-                  if (line.startsWith('*')) return <p key={i} className="text-stone-500 italic my-4 text-sm bg-stone-50 p-3 rounded-lg border-l-2 border-stone-300">{line.replace(/\*/g, '')}</p>
-                  return <p key={i} className="text-stone-600 my-3 leading-relaxed whitespace-pre-wrap">{line}</p>
-                })}
+                {renderMarkdown(result)}
               </div>
               <div className="mt-8 text-center px-6 pb-6">
                 <p className="text-xs text-stone-400 font-medium tracking-wide uppercase">AI Generate Content • For Reference Only</p>

@@ -13,22 +13,21 @@ const Step6Personnel: React.FC<Props> = ({ data, updateData }) => {
       <h2 className="text-2xl font-bold text-gray-900 mb-2">关键人员</h2>
       <p className="text-gray-500 mb-6">法人/监事/股东是否能配合线上操作</p>
 
-      <div className="grid grid-cols-2 gap-4">
-        <RadioGroup
-          label="实名认证"
-          options={[{ label: '可', value: 'yes' }, { label: '不可', value: 'no' }]}
-          layout="row"
-          value={data.realNameAuth}
-          onChange={(val) => updateData('realNameAuth', val)}
-        />
-         <RadioGroup
-          label="人脸识别"
-          options={[{ label: '可', value: 'yes' }, { label: '不可', value: 'no' }]}
-          layout="row"
-          value={data.faceAuth}
-          onChange={(val) => updateData('faceAuth', val)}
-        />
-      </div>
+      <RadioGroup
+        label="实名认证"
+        options={[{ label: '可', value: 'yes' }, { label: '不可', value: 'no' }]}
+        layout="row"
+        value={data.realNameAuth}
+        onChange={(val) => updateData('realNameAuth', val)}
+      />
+      
+      <RadioGroup
+        label="人脸识别"
+        options={[{ label: '可', value: 'yes' }, { label: '不可', value: 'no' }]}
+        layout="row"
+        value={data.faceAuth}
+        onChange={(val) => updateData('faceAuth', val)}
+      />
 
       <CheckboxGroup
         label="是否存在限制情形"

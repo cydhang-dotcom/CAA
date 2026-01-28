@@ -16,9 +16,9 @@ const Step3TaxInvoice: React.FC<Props> = ({ data, updateData }) => {
       <RadioGroup
         label="近期客户开票要求"
         options={[
+          { label: '不确定', value: 'uncertain' },
           { label: '增值税专用发票', value: 'special' },
           { label: '增值税普通发票', value: 'normal' },
-          { label: '不确定', value: 'uncertain' },
         ]}
         value={data.invoiceType}
         onChange={(val) => updateData('invoiceType', val)}
@@ -40,9 +40,9 @@ const Step3TaxInvoice: React.FC<Props> = ({ data, updateData }) => {
       <RadioGroup
         label="纳税人类型倾向"
         options={[
+          { label: '不确定', value: 'uncertain' },
           { label: '小规模纳税人', value: 'small' },
           { label: '一般纳税人', value: 'general' },
-          { label: '不确定', value: 'uncertain' },
         ]}
         value={data.taxpayerType}
         onChange={(val) => updateData('taxpayerType', val)}
